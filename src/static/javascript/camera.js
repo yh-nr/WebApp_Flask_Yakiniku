@@ -87,11 +87,10 @@ function validateBase64Image(base64Data) {
 // base64画像の検証
 function submitBase64Image(img) {
     if(!validateBase64Image(img)){
-        console.log('画像ファイルが不正です')
+        console.log('画像ファイルが不正です');
         return;
     }
         
-    // サーバにPOSTリクエストを送信（相対パスを使用）
     fetch('/', {
         method: 'POST',
         headers: {
@@ -99,11 +98,56 @@ function submitBase64Image(img) {
         },
         body: JSON.stringify({ image: img })
     })
-    // .then(response => response.json())
-    // .then(data => {
-    //     console.log('サーバからのレスポンス:', data);
+    .then(response => response.text())
+
+
+    // [1]取得したHTMLをページに挿入
+    .then(html => {
+        document.getElementById('result').innerHTML = html;
+    })
+    // // [2]現在のページの内容を新しいHTMLで上書き
+    // .then(html => {
+    //     document.open();
+    //     document.write(html);
+    //     document.close();
     // })
-    // .catch(error => {
-    //     console.error('エラー:', error);
-    // });
+    .catch(error => {
+        console.error('エラー:', error);
+    });
 }
+
+
+let currentStream = null;
+let currentDeviceId = null;
+let devices = [];
+
+async function getDevices() {
+    devices = await navigator.mediaDevices.enumerateDevices();
+    return devices.filter(device => device.kind === 'videoinput');
+}
+
+async function switchCamera() {
+    const videoDevices = await getDevices();
+    if (videoDevices.length === 0) return;
+
+    let nextDeviceId = videoDevices[0].deviceId;
+    if (currentDeviceId) {
+        const currentDeviceIndex = videoDevices.findIndex(device => device.deviceId === currentDeviceId);
+        if (currentDeviceIndex + 1 < videoDevices.length) {
+            nextDeviceId = videoDevices[currentDeviceIndex + 1].deviceId;
+        }
+    }
+
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: nextDeviceId } });
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+    }
+
+    currentDeviceId = nextDeviceId;
+    currentStream = stream;
+    videoElement.srcObject = stream;
+}
+const videoElement = document.getElementById('video');
+const switchCameraButton = document.getElementById('switch-camera');
+switchCameraButton.addEventListener('click', switchCamera);
+

@@ -1,10 +1,13 @@
 <title>
     焼肉部位判定アプリになるはずのやつ
 </title>
-
+<div id="result">
 <h1>
     ファイルをアップロードして犬か猫かを判定しようne
 </h1>
+
+
+
 
 
 <div>
@@ -14,12 +17,13 @@
 <div>
     <button id="capture">Capture</button>
     <form><input type = file name = filename id="file-input"></form>    
+    <button id="switch-camera">カメラを切り替える</button>
+    
 </div>
 
 
 <div>
     <canvas id="canvas" width="640" height="480"></canvas>
 </div>
-
-
+</div>
 <script src="static/javascript/camera.js"></script>
