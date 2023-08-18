@@ -8,20 +8,24 @@ import base64
 
 # 学習済みモデルをもとに推論する
 def predict(img):
+
     # ネットワークの準備
     net = Net().cpu().eval()
-    # # 学習済みモデルの重み（dog_cat.pt）を読み込み
-    # net.load_state_dict(torch.load('./src/dog_cat.pt', map_location=torch.device('cpu')))
+
+    # 学習済みモデルの重み（dog_cat.pt）を読み込み
     net.load_state_dict(torch.load('./dog_cat.pt', map_location=torch.device('cpu')))
-    #　データの前処理
+
+    # データの前処理
     img = transform(img)
-    img =img.unsqueeze(0) # 1次元増やす
-    #　推論
+    img = img.unsqueeze(0) # 1次元増やす
+
+    # 推論
     y = torch.argmax(net(img), dim=1).cpu().detach().numpy()
     y_pred_proba = round((max(torch.softmax(net(img), dim=1)[0]) * 100).item(),2)
+
     return y, y_pred_proba
 
-#　推論したラベルから犬か猫かを返す関数
+# 推論したラベルから犬か猫かを返す関数
 def getName(label):
     if label==0:
         return '猫'
@@ -34,9 +38,10 @@ app = Flask(__name__)
 # アップロードされる拡張子の制限
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'gif', 'jpeg'])
 
-#　拡張子が適切かどうかをチェック
+# 拡張子が適切かどうかをチェック
 def allwed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 # URL にアクセスがあった場合の挙動の設定
 @app.route('/', methods = ['GET', 'POST'])
@@ -46,6 +51,7 @@ def predicts():
         # ファイルがなかった場合の処理
         if 'filename' not in request.files:
             return redirect(request.url)
+        
         # データの取り出し
         file = request.files['filename']
         # ファイルのチェック
