@@ -68,8 +68,8 @@ def getName(label):
 def dogcat_process(image_base64_original):
 
     image_base64_resized, image_resized = resize_image(image_base64_original, 500) 
-
-    return *predict(image_resized), image_base64_resized
+    animalName_, animalNameProba_ = predict(image_resized)
+    return animalName_, animalNameProba_, image_base64_resized
 
 
 def predict(img):
@@ -79,6 +79,7 @@ def predict(img):
 
     # 学習済みモデルの重み（dog_cat.pt）を読み込み
     net.load_state_dict(torch.load('./dog_cat.pt', map_location=torch.device('cpu')))
+    # net.load_state_dict(torch.load('./src/dog_cat.pt', map_location=torch.device('cpu')))
 
     # データの前処理
     img = transform(img)

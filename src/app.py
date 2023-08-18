@@ -19,6 +19,7 @@ def allwed_file(filename):
 # URL にアクセスがあった場合の挙動の設定
 @app.route('/', methods = ['GET', 'POST'])
 def request_route():
+    print('検証')
     # リクエストがポストかどうかの判別
     if request.method == 'POST':
 
@@ -27,7 +28,7 @@ def request_route():
 
         with open('text_file.txt', 'w') as file:
             file.write(img_base64_original)
-            
+
         animalName_, animalNameProba_, base64_data = dogcat_process(img_base64_original)
         print('process完了')
         return render_template('result.html', animalName=animalName_, animalNameProba=animalNameProba_, image=base64_data)
