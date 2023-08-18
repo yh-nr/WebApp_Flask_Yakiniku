@@ -1,19 +1,25 @@
-<title>焼肉部位判定アプリになるはずのやつ</title>
+<title>
+    焼肉部位判定アプリになるはずのやつ
+</title>
 
 <h1>
     ファイルをアップロードして犬か猫かを判定しようne
 </h1>
-<form method = post enctype = multipart/form-data>
-<p><input type = file name = filename>
-<input type = submit value = 判定>
-</form>
 
 
+<div>
+    <video id="video" autoplay></video>
+</div>
 
-<video id="video" autoplay></video>
-<button id="snapshot">Take Snapshot</button>
-<canvas id="canvas" width="640" height="480"></canvas>
+<div>
+    <button id="capture">Capture</button>
+    <form><input type = file name = filename id="file-input"></form>    
+</div>
 
+
+<div>
+    <canvas id="canvas" width="640" height="480"></canvas>
+</div>
 
 
 <script src="static/javascript/camera.js"></script>

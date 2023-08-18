@@ -1,36 +1,9 @@
 # 必要なモジュールのインポート
-import torch
-from animal import transform, Net # animal.py から前処理とネットワークの定義を読み込み
+from process4dogcat import dogcat_process # animal.py から前処理とネットワークの定義を読み込み
 from flask import Flask, request, render_template, redirect
-import io
-from PIL import Image
-import base64
 
-# 学習済みモデルをもとに推論する
-def predict(img):
 
-    # ネットワークの準備
-    net = Net().cpu().eval()
 
-    # 学習済みモデルの重み（dog_cat.pt）を読み込み
-    net.load_state_dict(torch.load('./dog_cat.pt', map_location=torch.device('cpu')))
-
-    # データの前処理
-    img = transform(img)
-    img = img.unsqueeze(0) # 1次元増やす
-
-    # 推論
-    y = torch.argmax(net(img), dim=1).cpu().detach().numpy()
-    y_pred_proba = round((max(torch.softmax(net(img), dim=1)[0]) * 100).item(),2)
-
-    return y, y_pred_proba
-
-# 推論したラベルから犬か猫かを返す関数
-def getName(label):
-    if label==0:
-        return '猫'
-    elif label==1:
-        return '犬'
 
 # Flask のインスタンスを作成
 app = Flask(__name__)
@@ -45,41 +18,19 @@ def allwed_file(filename):
 
 # URL にアクセスがあった場合の挙動の設定
 @app.route('/', methods = ['GET', 'POST'])
-def predicts():
+def request_route():
     # リクエストがポストかどうかの判別
     if request.method == 'POST':
-        # ファイルがなかった場合の処理
-        if 'filename' not in request.files:
-            return redirect(request.url)
-        
-        # データの取り出し
-        file = request.files['filename']
-        # ファイルのチェック
-        if file and allwed_file(file.filename):
 
-            #　画像ファイルに対する処理
-            #　画像書き込み用バッファを確保
-            buf = io.BytesIO()
-            image = Image.open(file).convert('RGB')
+        data = request.json
+        img_base64_original = data['image']
 
-            # 画像の大きさを調整する
-            # 講義資料にはなく、追加しています！
-            new_width = 500
-            new_height = 500
-            image = image.resize((new_width, new_height))
-
-            #　画像データをバッファに書き込む
-            image.save(buf, 'png')
-            #　バイナリデータを base64 でエンコードして utf-8 でデコード
-            base64_str = base64.b64encode(buf.getvalue()).decode('utf-8')
-            #　HTML 側の src  の記述に合わせるために付帯情報付与する
-            base64_data = 'data:image/png;base64,{}'.format(base64_str)
-
-            # 入力された画像に対して推論
-            pred, animalNameProba_ = predict(image)
-            animalName_ = getName(pred)
+        with open('text_file.txt', 'w') as file:
+            file.write(img_base64_original)
             
-            return render_template('result.html', animalName=animalName_, animalNameProba=animalNameProba_, image=base64_data)
+        animalName_, animalNameProba_, base64_data = dogcat_process(img_base64_original)
+        print('process完了')
+        return render_template('result.html', animalName=animalName_, animalNameProba=animalNameProba_, image=base64_data)
 
     # GET メソッドの定義
     elif request.method == 'GET':
