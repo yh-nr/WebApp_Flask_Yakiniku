@@ -43,8 +43,8 @@ body, html {
 }
 
 .middle-section {
-    padding-top: 15%;
-    padding-bottom: 15%;
+    padding-top: 17%;
+    padding-bottom: 13%;
     padding-left: 15px;
     padding-right: 15px;
     overflow-y: auto;
@@ -117,3 +117,27 @@ h1.result_str {
     padding: 20px;
     box-sizing: border-box;
 }
+
+/* 半透明のボックススタイル */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#box {
+    background-color: rgba(1, 1, 1, 0.5);
+    overflow-y: auto;
+    width: 65%;
+    height: 55%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+

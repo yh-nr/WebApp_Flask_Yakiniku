@@ -11,7 +11,7 @@
 <body>
     <div class="top-section">
         <div class="title">焼肉部位判定アプリになるはずのやつ</div>
-        <button class="help-button">ヘルプ</button>
+        <button class="help-button" id="showHelp">ヘルプ</button>
     </div>
 
     <div class="middle-section">
@@ -20,7 +20,15 @@
             <video id="video" autoplay></video>
             <canvas id="canvas" width="640" height="480"></canvas>
         </div>
-        <h1 class="result_str" id="h1_title">犬猫判定：<span id="result"></span></h1>
+        <h1 class="result_str" id="h1_title">犬猫判定：<span id="result"></span>
+        </h1>
+
+        <!-- ヘルプボタンを押したときに表示されるボックス -->
+        <div id="overlay">
+            <div id="box">
+                <pre>{{ helpdoc }}</pre>
+            </div>
+        </div>          
         
     </div>
     <div class="bottom-section">
@@ -30,9 +38,9 @@
         </button>
         <label class="nav-button" id="file-input-label">
             <input type="file" id="file-input" style="display:none">
-            ファイルを 選択して 推論
+            画像から 推論
         </label>
-        <button class="nav-button" id="switch-camera">前後カメラ 切替</button>
+        <!-- <button class="nav-button" id="switch-camera">前後カメラ 切替</button> -->
         <button class="nav-button">5</button>
     </div>
 </body>

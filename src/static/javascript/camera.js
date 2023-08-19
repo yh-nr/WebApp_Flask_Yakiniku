@@ -23,20 +23,22 @@
 
     
     // // h1タグを取得
-    // const h1_title = document.getElementById('h1_title');
+    const h1_title = document.getElementById('h1_title');
     // // videoの高さに基づいてh1タグのmargin-topを設定
     // video.addEventListener('loadedmetadata', function() {
     //     h1_title.style.marginTop = (video.clientHeight + 20) + 'px';
     // });
 
 
-    // Caputure
+    // 撮影して推論ボタンが押されたら実行
     captureButton.addEventListener('click', async () => {
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
         context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
         video.style.display = 'none';
         canvas.style.display = 'block';
         // canvasの高さに基づいてh1タグのmargin-topを設定
-        // h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
+        result.textContent = '推論中．．．';
         const dataURL = canvasElement.toDataURL('image/png');
         submitBase64Image(dataURL)
     });
@@ -68,6 +70,7 @@
                 // canvasの高さに基づいてh1タグのmargin-topを設定
                 // h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
             }
+            result.textContent = '推論中．．．';
             img.src = event.target.result;
             submitBase64Image(event.target.result);
         };
@@ -142,38 +145,53 @@ function submitBase64Image(img) {
 }
 
 
-let currentStream = null;
-let currentDeviceId = null;
-let devices = [];
+// let currentStream = null;
+// let currentDeviceId = null;
+// let devices = [];
 
-async function getDevices() {
-    devices = await navigator.mediaDevices.enumerateDevices();
-    return devices.filter(device => device.kind === 'videoinput');
-}
+// async function getDevices() {
+//     devices = await navigator.mediaDevices.enumerateDevices();
+//     return devices.filter(device => device.kind === 'videoinput');
+// }
 
-async function switchCamera() {
-    const videoDevices = await getDevices();
-    if (videoDevices.length === 0) return;
+// async function switchCamera() {
+//     const videoDevices = await getDevices();
+//     if (videoDevices.length === 0) return;
 
-    let nextDeviceId = videoDevices[0].deviceId;
-    if (currentDeviceId) {
-        const currentDeviceIndex = videoDevices.findIndex(device => device.deviceId === currentDeviceId);
-        if (currentDeviceIndex + 1 < videoDevices.length) {
-            nextDeviceId = videoDevices[currentDeviceIndex + 1].deviceId;
-        }
-    }
+//     let nextDeviceId = videoDevices[0].deviceId;
+//     if (currentDeviceId) {
+//         const currentDeviceIndex = videoDevices.findIndex(device => device.deviceId === currentDeviceId);
+//         if (currentDeviceIndex + 1 < videoDevices.length) {
+//             nextDeviceId = videoDevices[currentDeviceIndex + 1].deviceId;
+//         }
+//     }
 
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: nextDeviceId } });
-    if (currentStream) {
-        currentStream.getTracks().forEach(track => track.stop());
-    }
+//     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: nextDeviceId } });
+//     if (currentStream) {
+//         currentStream.getTracks().forEach(track => track.stop());
+//     }
 
-    currentDeviceId = nextDeviceId;
-    currentStream = stream;
-    videoElement.srcObject = stream;
-}
+//     currentDeviceId = nextDeviceId;
+//     currentStream = stream;
+//     videoElement.srcObject = stream;
+// }
 
-const videoElement = document.getElementById('video');
-const switchCameraButton = document.getElementById('switch-camera');
-switchCameraButton.addEventListener('click', switchCamera);
+// const videoElement = document.getElementById('video');
+// const switchCameraButton = document.getElementById('switch-camera');
+// switchCameraButton.addEventListener('click', switchCamera);
 
+
+const showHelp = document.getElementById("showHelp");
+const overlay = document.getElementById("overlay");
+
+
+
+showHelp.addEventListener("click", () => {
+    overlay.style.display = "flex";
+});
+
+overlay.addEventListener("click", (event) => {
+  if (event.target === overlay) {
+    overlay.style.display = "none";
+  }
+});
