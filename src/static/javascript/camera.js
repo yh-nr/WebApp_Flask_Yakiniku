@@ -5,7 +5,9 @@
     // ユーザーのカメラからのメディアストリームを取得
     // 取得したメディアストリームをvideo要素のsrcObjectに設定
     const videoElement = document.getElementById('video');
-    const stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: "environment"} });
+    
+    var constraints = { audio: false, video: { facingMode: "environment" } };
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
     videoElement.srcObject = stream;
 
     // HTMLからcanvasの要素を取得
@@ -20,12 +22,12 @@
     const fileInput = document.getElementById('file-input');
 
     
-    // h1タグを取得
-    const h1_title = document.getElementById('h1_title');
-    // videoの高さに基づいてh1タグのmargin-topを設定
-    video.addEventListener('loadedmetadata', function() {
-        h1_title.style.marginTop = (video.clientHeight + 20) + 'px';
-    });
+    // // h1タグを取得
+    // const h1_title = document.getElementById('h1_title');
+    // // videoの高さに基づいてh1タグのmargin-topを設定
+    // video.addEventListener('loadedmetadata', function() {
+    //     h1_title.style.marginTop = (video.clientHeight + 20) + 'px';
+    // });
 
 
     // Caputure
@@ -34,7 +36,7 @@
         video.style.display = 'none';
         canvas.style.display = 'block';
         // canvasの高さに基づいてh1タグのmargin-topを設定
-        h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
+        // h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
         const dataURL = canvasElement.toDataURL('image/png');
         submitBase64Image(dataURL)
     });
@@ -64,26 +66,11 @@
                 canvas.style.display = 'block';
         
                 // canvasの高さに基づいてh1タグのmargin-topを設定
-                h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
+                // h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
             }
             img.src = event.target.result;
             submitBase64Image(event.target.result);
         };
-        
-
-        // reader.onload = function(event) {
-        //     let img = new Image();
-        //     img.onload = function() {
-        //         context.drawImage(img, 0, 0);  
-        //         video.style.display = 'none';
-        //         canvas.style.display = 'block';
-        //         // canvasの高さに基づいてh1タグのmargin-topを設定
-        //         h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
-        //     }
-        //     img.src = event.target.result;
-        //     submitBase64Image(event.target.result);
-
-        // };
 
         // ファイルを Data URL（Base64 形式）として読み込む
         reader.readAsDataURL(file);  
@@ -185,6 +172,7 @@ async function switchCamera() {
     currentStream = stream;
     videoElement.srcObject = stream;
 }
+
 const videoElement = document.getElementById('video');
 const switchCameraButton = document.getElementById('switch-camera');
 switchCameraButton.addEventListener('click', switchCamera);
