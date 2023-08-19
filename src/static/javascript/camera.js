@@ -5,7 +5,7 @@
     // ユーザーのカメラからのメディアストリームを取得
     // 取得したメディアストリームをvideo要素のsrcObjectに設定
     const videoElement = document.getElementById('video');
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: "environment"} });
     videoElement.srcObject = stream;
 
     // HTMLからcanvasの要素を取得
@@ -19,10 +19,22 @@
     // ファイルインプット要素を取得
     const fileInput = document.getElementById('file-input');
 
+    
+    // h1タグを取得
+    const h1_title = document.getElementById('h1_title');
+    // videoの高さに基づいてh1タグのmargin-topを設定
+    video.addEventListener('loadedmetadata', function() {
+        h1_title.style.marginTop = (video.clientHeight + 20) + 'px';
+    });
+
 
     // Caputure
     captureButton.addEventListener('click', async () => {
         context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+        video.style.display = 'none';
+        canvas.style.display = 'block';
+        // canvasの高さに基づいてh1タグのmargin-topを設定
+        h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
         const dataURL = canvasElement.toDataURL('image/png');
         submitBase64Image(dataURL)
     });
@@ -33,16 +45,45 @@
         // 選択されたファイルを取得（複数選択可能な場合は、files[0] の代わりにループ処理が必要）
         const file = fileInput.files[0];
         const reader = new FileReader();
-
+        
         reader.onload = function(event) {
             let img = new Image();
             img.onload = function() {
-                context.drawImage(img, 0, 0);
+                // 画像のアスペクト比を計算
+                const aspectRatio = img.width / img.height;
+        
+                // キャンバスの幅に合わせて、画像の新しい高さを計算
+                const newWidth = canvas.width;
+                const newHeight = newWidth / aspectRatio;
+        
+                // 画像をキャンバスに描画（指定した幅と高さで）
+                canvas.height = newHeight;
+                context.drawImage(img, 0, 0, newWidth, newHeight);
+        
+                video.style.display = 'none';
+                canvas.style.display = 'block';
+        
+                // canvasの高さに基づいてh1タグのmargin-topを設定
+                h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
             }
             img.src = event.target.result;
             submitBase64Image(event.target.result);
-
         };
+        
+
+        // reader.onload = function(event) {
+        //     let img = new Image();
+        //     img.onload = function() {
+        //         context.drawImage(img, 0, 0);  
+        //         video.style.display = 'none';
+        //         canvas.style.display = 'block';
+        //         // canvasの高さに基づいてh1タグのmargin-topを設定
+        //         h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
+        //     }
+        //     img.src = event.target.result;
+        //     submitBase64Image(event.target.result);
+
+        // };
 
         // ファイルを Data URL（Base64 形式）として読み込む
         reader.readAsDataURL(file);  
@@ -50,9 +91,6 @@
 
     
 })(); // 即時実行関数の終了
-
-
-const URL_HOME = 'http://127.0.0.1:5000/'
 
 
 // base64画像の検証

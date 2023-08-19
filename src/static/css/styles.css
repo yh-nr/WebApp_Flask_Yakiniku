@@ -1,0 +1,105 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #000; /* 黒 */
+}
+
+.top-section, .bottom-section {
+    background-color: #333; /* 濃いグレー */
+    color: #fff; /* 文字色を白に */
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.top-section {
+    height: 12%;
+    top: 0;
+    border-bottom: 2px solid #555; /* 下の境界線 */
+}
+
+.title {
+    width: 85%;
+    padding-left: 15px;
+    font-size: 1.5em;
+}
+
+.help-button {
+    width: 15%;
+    height: 100%;
+    background-color: #333; /* 濃いグレー */
+    color: #fff; /* 文字色を白に */
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.help-button:hover {
+    background-color: #8b0000; /* ワインレッド */
+}
+
+.middle-section {
+    padding-top: 15%;
+    padding-bottom: 15%;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow-y: auto;
+    height: 70%;
+    color: #fff; /* 文字色を白に */
+    background-color: #909090; /* 明るいグレー */
+}
+
+.bottom-section {
+    height: 15%;
+    bottom: 0;
+    justify-content: space-around;
+    border-top: 2px solid #555; /* 上の境界線 */
+}
+
+.nav-button, label.nav-button, a.nav-button {
+    background-color: #444; /* グレー */
+    color: #fff; /* 文字色を白に */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    width: 20%; /* すべてのボタンの幅を20%に設定 */
+    box-sizing: border-box; /* paddingとborderを幅に含める */
+    text-decoration: none; /* リンクの下線を消す */
+    line-height: 1.2; /* テキストを中央に配置 */
+    height: 100%; /* ボタンの高さを親要素の高さに合わせる */
+    display: flex; /* Flexboxを使用 */
+    align-items: center; /* 子要素を縦方向の中央に配置 */
+    justify-content: center; /* 子要素を横方向の中央に配置 */
+}
+
+.nav-button:hover, label.nav-button:hover, a.nav-button:hover {
+    background-color: #555; /* やや明るいグレー */
+}
+
+#video {
+    width: 100%; /* 画面の幅に合わせる */
+    height: auto; /* 高さは自動的に設定 */
+}
+
+#canvas {
+    width: 100%; /* 画面の幅に合わせる */
+    height: auto; /* 高さは自動的に設定 */
+    display: none;
+}
+
+#media-container {
+    position: relative;
+    width: 100%; /* 画面の幅に合わせる */
+    height: auto; /* 高さは自動的に設定 */
+}
+#video, #canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
