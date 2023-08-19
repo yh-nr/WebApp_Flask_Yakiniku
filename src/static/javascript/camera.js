@@ -15,11 +15,10 @@
     const canvasElement = document.getElementById('canvas');
     const context = canvasElement.getContext('2d');
 
-    // HTMLからcaptureボタンの要素を取得
-    const captureButton = document.getElementById('capture')
-    
-    // ファイルインプット要素を取得
-    const fileInput = document.getElementById('file-input');
+    // ボタン要素の取得
+    const captureButton = document.getElementById('capture')    //撮影して推論
+    const fileInput = document.getElementById('file-input');    //画像から推論
+    const switch_model = document.getElementById('switch_model');    //モデル切替
 
     
     // // h1タグを取得
@@ -38,6 +37,7 @@
         video.style.display = 'none';
         canvas.style.display = 'block';
         // canvasの高さに基づいてh1タグのmargin-topを設定
+        h1_title.style.display = 'block'
         result.textContent = '推論中．．．';
         const dataURL = canvasElement.toDataURL('image/png');
         submitBase64Image(dataURL)
@@ -70,6 +70,7 @@
                 // canvasの高さに基づいてh1タグのmargin-topを設定
                 // h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
             }
+            h1_title.style.display = 'flex'
             result.textContent = '推論中．．．';
             img.src = event.target.result;
             submitBase64Image(event.target.result);
@@ -77,6 +78,30 @@
 
         // ファイルを Data URL（Base64 形式）として読み込む
         reader.readAsDataURL(file);  
+    });
+
+
+    // キャンバスをクリックした場合の処理
+    canvasElement.addEventListener('click', async () => {
+        if (result.textContent != '推論中．．．'){            
+            video.style.display = 'block';
+            canvas.style.display = 'none';
+            h1_title.style.display = 'none';
+            }
+    });
+    
+    // モデル切替ボタンが押された時の処理
+    switch_model.addEventListener('click', async () => {
+        // canvas.width = videoElement.videoWidth;
+        // canvas.height = videoElement.videoHeight;
+        // context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+        video.style.display = 'block';
+        canvas.style.display = 'none';
+        // canvasの高さに基づいてh1タグのmargin-topを設定
+        h1_title.innerHTML = '肉かどうか判定：<span id="result"></span>';
+        result.textContent = '';
+        // const dataURL = canvasElement.toDataURL('image/png');
+        // submitBase64Image(dataURL)
     });
 
     
@@ -112,7 +137,7 @@ function validateBase64Image(base64Data) {
 }
 
 
-// base64画像の検証
+// base64画像をサーバーにPOSTする
 function submitBase64Image(img) {
     if(!validateBase64Image(img)){
         console.log('画像ファイルが不正です');
@@ -129,62 +154,17 @@ function submitBase64Image(img) {
     .then(response => response.text())
 
 
-    // [1]取得したHTMLをページに挿入
     .then(html => {
         document.getElementById('result').innerHTML = html;
     })
-    // // [2]現在のページの内容を新しいHTMLで上書き
-    // .then(html => {
-    //     document.open();
-    //     document.write(html);
-    //     document.close();
-    // })
     .catch(error => {
         console.error('エラー:', error);
     });
 }
 
 
-// let currentStream = null;
-// let currentDeviceId = null;
-// let devices = [];
-
-// async function getDevices() {
-//     devices = await navigator.mediaDevices.enumerateDevices();
-//     return devices.filter(device => device.kind === 'videoinput');
-// }
-
-// async function switchCamera() {
-//     const videoDevices = await getDevices();
-//     if (videoDevices.length === 0) return;
-
-//     let nextDeviceId = videoDevices[0].deviceId;
-//     if (currentDeviceId) {
-//         const currentDeviceIndex = videoDevices.findIndex(device => device.deviceId === currentDeviceId);
-//         if (currentDeviceIndex + 1 < videoDevices.length) {
-//             nextDeviceId = videoDevices[currentDeviceIndex + 1].deviceId;
-//         }
-//     }
-
-//     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: nextDeviceId } });
-//     if (currentStream) {
-//         currentStream.getTracks().forEach(track => track.stop());
-//     }
-
-//     currentDeviceId = nextDeviceId;
-//     currentStream = stream;
-//     videoElement.srcObject = stream;
-// }
-
-// const videoElement = document.getElementById('video');
-// const switchCameraButton = document.getElementById('switch-camera');
-// switchCameraButton.addEventListener('click', switchCamera);
-
-
 const showHelp = document.getElementById("showHelp");
 const overlay = document.getElementById("overlay");
-
-
 
 showHelp.addEventListener("click", () => {
     overlay.style.display = "flex";
