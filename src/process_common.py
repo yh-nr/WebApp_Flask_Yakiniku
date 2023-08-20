@@ -82,3 +82,30 @@ def send_message(message_text, image):
     buf_r = io.BufferedReader(buf)
     files = {'imageFile': buf_r}
     requests.post('https://notify-api.line.me/api/notify', headers=headers, data=data, files=files)
+
+
+def ResultPost2Spreadsheet(title, post_comment, image_base64, model_index):
+#   payload = {
+#     'title': title,
+#     'message': post_comment,
+#     'image_base64': image_base64,
+#     'sheet_name': sheet_name
+#   }
+    payload = {
+        'title': "推論結果テスト",
+        'message': post_comment,
+        'image_base64': image_base64,
+        'sheet_name': "test_predict"
+    }
+
+    post_url = os.getenv('spreadsheet_post_url')
+    response = requests.post(os.environ['SUMMARY_POST_URL'], data=payload)
+
+    # 応答を確認します。
+    if response.status_code == 200:
+        return('画像がスプレッドシートに正常にアップロードされました。')
+    else:
+        return('画像のアップロードに失敗しました。ステータスコード：' + str(response.status_code))
+
+
+

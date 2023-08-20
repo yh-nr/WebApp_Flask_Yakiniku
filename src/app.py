@@ -1,5 +1,5 @@
 # 必要なモジュールのインポート
-from process_common import send_message # animal.py から前処理とネットワークの定義を読み込み
+from process_common import send_message, SummaryPost2Spreadsheet # animal.py から前処理とネットワークの定義を読み込み
 from process4dogcat import dogcat_process # animal.py から前処理とネットワークの定義を読み込み
 from process4meatornot import meatornot_process # animal.py から前処理とネットワークの定義を読み込み
 from flask import Flask, request, render_template, redirect
@@ -34,6 +34,7 @@ def request_route():
         try:Name_, NameProba_, base64_data, image_data = PPL[model_index](img_base64_original)
         except:return
         send_message(f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', image_data)
+        SummaryPost2Spreadsheet('テストタイトル', f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', base64_data, model_index)
         return render_template('result.html', Name=Name_, NameProba=NameProba_, image=base64_data)
 
     # GET メソッドの定義
