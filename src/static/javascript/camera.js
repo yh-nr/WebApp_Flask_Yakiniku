@@ -76,6 +76,7 @@ let model_dict = ["犬猫分類モデル", "肉・肉以外分類モデル", "�
             }
             h1_title.style.display = 'flex'
             result.textContent = '推論中．．．';
+            h2_info_footer.textContent = 'しばらくお待ちください';
             img.src = event.target.result;
             submitBase64Image(event.target.result);
         };
@@ -90,7 +91,9 @@ let model_dict = ["犬猫分類モデル", "肉・肉以外分類モデル", "�
         if (result.textContent != '推論中．．．'){            
             video.style.display = 'block';
             canvas.style.display = 'none';
+            result.textContent = '';
             h1_title.style.display = 'none';
+            h2_info_footer.textContent = '「撮影して推論」か「画像で推論」をタップ';
             }
     });
 
@@ -109,6 +112,7 @@ let model_dict = ["犬猫分類モデル", "肉・肉以外分類モデル", "�
         model_index = (model_index + 1) % model_dict.length;
         h2_info_header.textContent = model_dict[model_index];
         result.textContent = '';
+        h2_info_footer.textContent = '「撮影して推論」か「画像で推論」をタップ';
         // const dataURL = canvasElement.toDataURL('image/png');
         // submitBase64Image(dataURL)
     });
