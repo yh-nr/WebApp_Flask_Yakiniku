@@ -2,11 +2,12 @@
 from process_common import send_message, ResultPost2Spreadsheet # animal.py から前処理とネットワークの定義を読み込み
 from process4dogcat import dogcat_process # animal.py から前処理とネットワークの定義を読み込み
 from process4meatornot import meatornot_process # animal.py から前処理とネットワークの定義を読み込み
+from process4meat3 import meat3_process # animal.py から前処理とネットワークの定義を読み込み
 from flask import Flask, request, render_template, redirect
 
 
 # PredictProcessList
-PPL = [dogcat_process, meatornot_process]
+PPL = [dogcat_process, meatornot_process, meat3_process]
 
 # Flask のインスタンスを作成
 app = Flask(__name__)
@@ -33,8 +34,11 @@ def request_route():
         print(model_index)
         try:Name_, NameProba_, base64_data, image_data = PPL[model_index](img_base64_original)
         except:return
-        send_message(f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', image_data)
-        ResultPost2Spreadsheet('テストタイトル', f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', base64_data, model_index)
+        try:
+            send_message(f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', image_data)
+            ResultPost2Spreadsheet('テストタイトル', f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', base64_data, model_index)
+        except:
+            pass
         return render_template('result.html', Name=Name_, NameProba=NameProba_, image=base64_data)
 
     # GET メソッドの定義

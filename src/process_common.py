@@ -4,12 +4,6 @@ import io, base64, re, os, requests                   #
 #画像変換
 from PIL import Image                           #
 
-# # pytorch系のimport
-# import torch                                  #
-# import torch.nn as nn                         #
-# from torchvision import transforms            #
-# from torchvision.models import resnet18       #学習時に使ったのと同じ学習済みモデルをインポート
-
 
 def resize_image(base64_string, output_size):
 
@@ -72,8 +66,11 @@ def validate_base64_image(base64_data):
 
 # Line送信
 def send_message(message_text, image):
-    try:LineApiKey = os.getenv('line_key')
-    except:return
+    print('テスト')
+    LineApiKey = os.getenv('line_key')
+    if LineApiKey==None:
+        LineApiKey = os.environ['LINE_NOTIFY_API_TOKEN']
+    print(LineApiKey)
     headers = {'Authorization': 'Bearer ' + LineApiKey}
     data = {'message': f'{message_text}'}
     buf = io.BytesIO()
@@ -91,8 +88,11 @@ def ResultPost2Spreadsheet(title, post_comment, image_base64, model_index):
         'image_base64': image_base64,
         'sheet_name': "test_predict"
     }
-
+    
     post_url = os.getenv('spreadsheet_post_url')
+    if post_url==None:
+        post_url = os.environ['SUMMARY_POST_URL']
+    
     response = requests.post(post_url, data=payload)
 
     # 応答を確認します。

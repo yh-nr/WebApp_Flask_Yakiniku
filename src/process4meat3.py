@@ -1,3 +1,8 @@
+# #標準ライブラリ
+import io, base64                           #
+
+# #画像変換
+# from PIL import Image                       #
 
 # pytorch系のimport
 import torch                                #
@@ -17,6 +22,22 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
+
+# #　ネットワークの定義
+# class Net(pl.LightningModule):
+
+#     def __init__(self):
+#         super().__init__()
+
+#         #学習時に使ったのと同じ学習済みモデルを定義
+#         self.feature = resnet18(pretrained=True) 
+#         self.fc = nn.Linear(1000, 2)
+
+#     def forward(self, x):
+#         #学習時に使ったのと同じ順伝播
+#         h = self.feature(x)
+#         h = self.fc(h)
+#         return h
     
 # PytorchLightningを使わないバージョン
 class Net(nn.Module):
@@ -38,13 +59,14 @@ class Net(nn.Module):
 # 推論したラベルから犬か猫かを返す関数
 def getName(label):
     if label==0:
-        return '猫'
+        return '肉以外'
     elif label==1:
-        return '犬'
+        return '肉'
 
 # 入力：リサイズ前のbase64画像
 # 出力：推論結果、確率、リサイズ後のbase64画像
-def dogcat_process(image_base64_original):
+def meat3_process(image_base64_original):
+    return 
     if validate_base64_image(image_base64_original): 
         image_base64_resized, image_resized = resize_image(image_base64_original, 500) 
         Name_, NameProba_ = predict(image_resized)

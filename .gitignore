@@ -2,3 +2,4 @@
 .vscode
 kikagaku_choki_15_webapp_flask_2_dogcat.code-workspace
 requirements_local.txt
+.env
