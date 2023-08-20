@@ -42,6 +42,7 @@ let model_dict = ["犬猫分類モデル", "肉・肉以外分類モデル", "�
         // canvasの高さに基づいてh1タグのmargin-topを設定
         h1_title.style.display = 'block'
         result.textContent = '推論中．．．';
+        h2_info_footer.textContent = 'しばらくお待ちください';
         const dataURL = canvasElement.toDataURL('image/png');
         submitBase64Image(dataURL)
     });
@@ -106,7 +107,7 @@ let model_dict = ["犬猫分類モデル", "肉・肉以外分類モデル", "�
         h1_title.style.display = 'none';
         // canvasの高さに基づいてh1タグのmargin-topを設定
         model_index = (model_index + 1) % model_dict.length;
-        h2_info_header.innerHTML = model_dict[model_index];
+        h2_info_header.textContent = model_dict[model_index];
         result.textContent = '';
         // const dataURL = canvasElement.toDataURL('image/png');
         // submitBase64Image(dataURL)
@@ -165,7 +166,9 @@ function submitBase64Image(img) {
 
 
     .then(html => {
-        document.getElementById('result').innerHTML = html;
+        result.innerHTML = html;
+        h2_info_footer.textContent = '画像タップでカメラに戻る';
+        
     })
     .catch(error => {
         console.error('エラー:', error);

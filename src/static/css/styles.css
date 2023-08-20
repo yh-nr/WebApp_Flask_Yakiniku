@@ -119,7 +119,7 @@ h1.result_str {
     display: none;
 }
 
-/* 半透明のボックススタイル */
+/* 半透明のボックススタイル *//* 半透明のボックススタイル */
 #overlay {
     display: none;
     position: fixed;
@@ -135,26 +135,31 @@ h1.result_str {
 #box {
     position: relative;
     background-color: rgba(1, 1, 1, 0.5);
-    overflow-y: auto;
-    width: 65%;
-    height: 55%;
+    overflow: hidden; /* これは重要です */
+    width: 75%;
+    height: 65%;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
+#content-box {
+    overflow-y: auto;
+    height: 100%;
+}
+
 #close-button {
     position: absolute;
-    top: 3%; /* ボタンの位置を調整 */
-    right: 3%; /* ボタンの位置を調整 */
+    top: 3%;
+    right: 3%;
     font-size: 30px;
     cursor: pointer;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
+    /* width: 25px;
+    height: 25px; */
     text-align: center;
     line-height: 25px;
 }
+
 
 div.app_info_header {
     position: fixed;
@@ -182,6 +187,23 @@ div.app_info_footer {
     height: 3%;
     background-color: rgba(255, 255, 255, 0.5);
     color: #000;
+    margin: 0;
+    padding: 0px;
+    box-sizing: border-box;
+    display: flex;          /* Flexbox を有効にする */
+    justify-content: center; /* 横方向の配置を中央に */
+    align-items: center;     /* 縦方向の配置を中央に */
+}
+
+div.caution {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 100%;
+    height: 3%;
+    background-color: rgba(255, 255, 255, 0.26);
+    color: hsl(0, 100%, 50%);
     margin: 0;
     padding: 0px;
     box-sizing: border-box;
