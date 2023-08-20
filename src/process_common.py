@@ -78,5 +78,7 @@ def send_message(message_text, image):
     data = {'message': f'{message_text}'}
     buf = io.BytesIO()
     image.save(buf, 'png')
-    files = {'imageFile': open(buf, 'rb')}
+    buf.seek(0)
+    buf_r = io.BufferedReader(buf)
+    files = {'imageFile': buf_r}
     requests.post('https://notify-api.line.me/api/notify', headers=headers, data=data, files=files)
