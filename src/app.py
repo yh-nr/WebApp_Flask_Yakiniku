@@ -21,7 +21,7 @@ def allwed_file(filename):
 
 # Line送信
 def send_message(message_text, fig):
-  try:LineApiKey = os.getenv(line_key)
+  try:LineApiKey = os.getenv('line_key')
   except:return
   headers = {'Authorization': 'Bearer ' + LineApiKey}
   data = {'message': f'{message_text}'}
