@@ -1,6 +1,10 @@
 # 必要なモジュールのインポート
 from process4dogcat import dogcat_process # animal.py から前処理とネットワークの定義を読み込み
+from process4meatornot import meatornot_process # animal.py から前処理とネットワークの定義を読み込み
 from flask import Flask, request, render_template, redirect
+
+# PredictProcessList
+PPL = [dogcat_process, meatornot_process]
 
 # Flask のインスタンスを作成
 app = Flask(__name__)
@@ -21,12 +25,13 @@ def request_route():
 
         data = request.json
         img_base64_original = data['image']
+        model_index = data['model_index']
 
         # with open('text_file.txt', 'w') as file:
         #     file.write(img_base64_original)
-
-        animalName_, animalNameProba_, base64_data = dogcat_process(img_base64_original)
-        return render_template('result.html', animalName=animalName_, animalNameProba=animalNameProba_, image=base64_data)
+        print(model_index)
+        Name_, NameProba_, base64_data = PPL[model_index](img_base64_original)
+        return render_template('result.html', Name=Name_, NameProba=NameProba_, image=base64_data)
 
     # GET メソッドの定義
     elif request.method == 'GET':    

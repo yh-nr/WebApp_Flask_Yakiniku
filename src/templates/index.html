@@ -20,16 +20,20 @@
             <video id="video" autoplay></video>
             <canvas id="canvas" width="640" height="480"></canvas>
         </div>
-        <h1 class="result_str" id="h1_title">犬猫判定：<span id="result"></span></h1>
+        <h1 class="result_str" id="h1_title"><span id="result"></span></h1>
 
         <!-- ヘルプボタンを押したときに表示されるボックス -->
         <div id="overlay">
+    
             <div id="box">
+                <span id="close-button" onclick="closeBox()">×</span>
                 <pre>{{ helpdoc }}</pre>
             </div>
         </div>          
         
     </div>
+    <div class="app_info_header" id="h2_info_header">モデル：犬猫判定</div>
+    <div class="app_info_footer" id="h2_info_footer">「撮影して推論」か「画像で推論」を押してください</div>
     <div class="bottom-section">
         <a href="./" class="nav-button">トップ</a>
         <button class="nav-button"id="capture">

@@ -1,3 +1,6 @@
+// モデルの種類
+let model_dict = ["犬猫分類モデル", "肉・肉以外分類モデル", "カルビ・ハラミ・ロース分類モデル"];
+
 // 即時実行関数を使用して、コードをスコープ内に閉じ込める
 (async function() {
     
@@ -89,6 +92,9 @@
             h1_title.style.display = 'none';
             }
     });
+
+
+    
     
     // モデル切替ボタンが押された時の処理
     switch_model.addEventListener('click', async () => {
@@ -97,12 +103,16 @@
         // context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
         video.style.display = 'block';
         canvas.style.display = 'none';
+        h1_title.style.display = 'none';
         // canvasの高さに基づいてh1タグのmargin-topを設定
-        h1_title.innerHTML = '肉かどうか判定：<span id="result"></span>';
+        model_index = (model_index + 1) % model_dict.length;
+        h2_info_header.innerHTML = model_dict[model_index];
         result.textContent = '';
         // const dataURL = canvasElement.toDataURL('image/png');
         // submitBase64Image(dataURL)
     });
+
+
 
     
 })(); // 即時実行関数の終了
@@ -143,13 +153,13 @@ function submitBase64Image(img) {
         console.log('画像ファイルが不正です');
         return;
     }
-        
+    console.log(model_index)
     fetch('/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ image: img })
+        body: JSON.stringify({ image: img, model_index:model_index })
     })
     .then(response => response.text())
 
@@ -162,7 +172,7 @@ function submitBase64Image(img) {
     });
 }
 
-
+let model_index = 0;
 const showHelp = document.getElementById("showHelp");
 const overlay = document.getElementById("overlay");
 
@@ -175,3 +185,7 @@ overlay.addEventListener("click", (event) => {
     overlay.style.display = "none";
   }
 });
+
+function closeBox() {
+    document.getElementById('overlay').style.display = 'none';
+}

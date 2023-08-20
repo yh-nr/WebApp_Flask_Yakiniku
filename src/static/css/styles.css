@@ -43,7 +43,7 @@ body, html {
 }
 
 .middle-section {
-    padding-top: 17%;
+    padding-top: 28%;
     padding-bottom: 13%;
     padding-left: 15px;
     padding-right: 15px;
@@ -133,6 +133,7 @@ h1.result_str {
 }
 
 #box {
+    position: relative;
     background-color: rgba(1, 1, 1, 0.5);
     overflow-y: auto;
     width: 65%;
@@ -140,5 +141,52 @@ h1.result_str {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#close-button {
+    position: absolute;
+    top: 3%; /* ボタンの位置を調整 */
+    right: 3%; /* ボタンの位置を調整 */
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+}
+
+div.app_info_header {
+    position: fixed;
+    top: 12%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 100%;
+    height: 3%;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #000;
+    margin: 0;
+    padding: 0px;
+    box-sizing: border-box;
+    display: flex;          /* Flexbox を有効にする */
+    justify-content: center; /* 横方向の配置を中央に */
+    align-items: center;     /* 縦方向の配置を中央に */
+}
+
+div.app_info_footer {
+    position: fixed;
+    bottom: 15%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 100%;
+    height: 3%;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #000;
+    margin: 0;
+    padding: 0px;
+    box-sizing: border-box;
+    display: flex;          /* Flexbox を有効にする */
+    justify-content: center; /* 横方向の配置を中央に */
+    align-items: center;     /* 縦方向の配置を中央に */
 }
 
