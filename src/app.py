@@ -41,8 +41,9 @@ def request_route():
         # with open('text_file.txt', 'w') as file:
         #     file.write(img_base64_original)
         print(model_index)
-        Name_, NameProba_, base64_data = PPL[model_index](img_base64_original)
-        send_message(f'この画像は{NameProba_}%の確率で{Name_}です。', base64_data)
+        try:Name_, NameProba_, base64_data, image_buf = PPL[model_index](img_base64_original)
+        except:return
+        send_message(f'この画像は{NameProba_}%の確率で{Name_}です。', image_buf)
         return render_template('result.html', Name=Name_, NameProba=NameProba_, image=base64_data)
 
     # GET メソッドの定義

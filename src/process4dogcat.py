@@ -1,5 +1,5 @@
 # #標準ライブラリ
-# import io, base64                           #
+import io, base64                           #
 
 # #画像変換
 # from PIL import Image                       #
@@ -11,7 +11,7 @@ from torchvision import transforms          #
 from torchvision.models import resnet18     #学習時に使ったのと同じ学習済みモデルをインポート
 #import pytorch_lightning as pl              #
 
-from process_common import resize_image
+from process_common import resize_image, validate_base64_image
 
 
 
@@ -66,10 +66,14 @@ def getName(label):
 # 入力：リサイズ前のbase64画像
 # 出力：推論結果、確率、リサイズ後のbase64画像
 def dogcat_process(image_base64_original):
-
-    image_base64_resized, image_resized = resize_image(image_base64_original, 500) 
-    animalName_, animalNameProba_ = predict(image_resized)
-    return animalName_, animalNameProba_, image_base64_resized
+    if validate_base64_image(image_base64_original): 
+        image_base64_resized, image_resized = resize_image(image_base64_original, 500) 
+        animalName_, animalNameProba_ = predict(image_resized)
+        buf = io.BytesIO()
+        image_resized.save(buf,['png'])
+        return animalName_, animalNameProba_, image_base64_resized, buf
+    else:
+        return
 
 
 def predict(img):
