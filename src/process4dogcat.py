@@ -69,9 +69,7 @@ def dogcat_process(image_base64_original):
     if validate_base64_image(image_base64_original): 
         image_base64_resized, image_resized = resize_image(image_base64_original, 500) 
         animalName_, animalNameProba_ = predict(image_resized)
-        buf = io.BytesIO()
-        image_resized.save(buf,['png'])
-        return animalName_, animalNameProba_, image_base64_resized, buf
+        return animalName_, animalNameProba_, image_base64_resized, image_resized
     else:
         return
 

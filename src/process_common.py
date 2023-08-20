@@ -1,5 +1,5 @@
 #標準ライブラリ
-import io, base64, re                           #
+import io, base64, re, os, requests                   #
 
 #画像変換
 from PIL import Image                           #
@@ -68,3 +68,15 @@ def validate_base64_image(base64_data):
         return False
 
     return True
+
+
+# Line送信
+def send_message(message_text, image):
+    try:LineApiKey = os.getenv('line_key')
+    except:return
+    headers = {'Authorization': 'Bearer ' + LineApiKey}
+    data = {'message': f'{message_text}'}
+    buf = io.BytesIO()
+    image.save(buf, 'png')
+    files = {'imageFile': open(buf, 'rb')}
+    requests.post('https://notify-api.line.me/api/notify', headers=headers, data=data, files=files)
