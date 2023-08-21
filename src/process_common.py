@@ -82,10 +82,11 @@ def send_message(message_text, image):
 
 
 def ResultPost2Spreadsheet(title, post_comment, image_base64, model_index):
+    header, image = base64_string.split(',', 1)
     payload = {
         'title': "推論結果テスト",
         'message': post_comment,
-        'image_base64': image_base64,
+        'image_base64': image,
         'sheet_name': "test_predict"
     }
     
