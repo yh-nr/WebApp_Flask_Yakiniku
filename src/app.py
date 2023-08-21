@@ -36,7 +36,7 @@ def request_route():
         except:return
         try:
             send_message(f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', image_data)
-            ResultPost2Spreadsheet('テストタイトル', f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{model_index}）', base64_data, model_index)
+            ResultPost2Spreadsheet('テストタイトル', f'この画像は{NameProba_}%の確率で{Name_}です。\n（使用モデル：{PPL[model_index].__name__}）', base64_data, model_index)
         except:
             pass
         return render_template('result.html', Name=Name_, NameProba=NameProba_, image=base64_data)
