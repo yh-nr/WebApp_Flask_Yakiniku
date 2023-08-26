@@ -40,11 +40,9 @@ let model_dict = ["肉５種分類モデル", "犬猫分類モデル"];
         video.style.display = 'none';
         canvas.style.display = 'block';
         // canvasの高さに基づいてh1タグのmargin-topを設定
-        h1_title.style.display = 'block'
-        result.textContent = '推論中．．．';
-        h2_info_footer.textContent = 'しばらくお待ちください';
+        h2_info_footer.textContent = '画像を送信しますか？';
         const dataURL = canvasElement.toDataURL('image/png');
-        submitBase64Image(dataURL)
+        submitconfirm(dataURL)
     });
 
 
@@ -71,14 +69,10 @@ let model_dict = ["肉５種分類モデル", "犬猫分類モデル"];
                 video.style.display = 'none';
                 canvas.style.display = 'block';
         
-                // canvasの高さに基づいてh1タグのmargin-topを設定
-                // h1_title.style.marginTop = (canvas.clientHeight + 20) + 'px';
             }
-            h1_title.style.display = 'flex'
-            result.textContent = '推論中．．．';
-            h2_info_footer.textContent = 'しばらくお待ちください';
+            h2_info_footer.textContent = '画像を送信しますか？';
             img.src = event.target.result;
-            submitBase64Image(event.target.result);
+            submitconfirm(event.target.result);
         };
 
         // ファイルを Data URL（Base64 形式）として読み込む
@@ -102,19 +96,13 @@ let model_dict = ["肉５種分類モデル", "犬猫分類モデル"];
     
     // モデル切替ボタンが押された時の処理
     switch_model.addEventListener('click', async () => {
-        // canvas.width = videoElement.videoWidth;
-        // canvas.height = videoElement.videoHeight;
-        // context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
         video.style.display = 'block';
         canvas.style.display = 'none';
         h1_title.style.display = 'none';
-        // canvasの高さに基づいてh1タグのmargin-topを設定
         model_index = (model_index + 1) % model_dict.length;
         h2_info_header.textContent = model_dict[model_index];
         result.textContent = '';
         h2_info_footer.textContent = '「撮影して推論」か「画像で推論」をタップ';
-        // const dataURL = canvasElement.toDataURL('image/png');
-        // submitBase64Image(dataURL)
     });
 
 
@@ -149,6 +137,31 @@ function validateBase64Image(base64Data) {
     }
 
     return true;
+}
+
+function canvas_reset(){
+    video.style.display = 'block';
+    canvas.style.display = 'none';
+    result.textContent = '';
+    h1_title.style.display = 'none';
+    h2_info_footer.textContent = '「撮影して推論」か「画像で推論」をタップ';
+}
+
+
+function submitconfirm(img){
+    setTimeout(() => {
+        if (confirm("画像を送信します。よろしいですか？")) {
+            //yesの場合
+            submitBase64Image(img);
+            h1_title.style.display = 'block'
+            result.textContent = '推論中．．．';
+            h2_info_footer.textContent = 'しばらくお待ちください';
+        } else {
+            // Noが選択された場合の処理
+            canvas_reset()
+            console.log("Noが選択されました");
+        }
+    }, 50); // 50ミリ秒の遅延を追加
 }
 
 
