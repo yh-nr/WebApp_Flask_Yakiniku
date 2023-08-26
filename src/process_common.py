@@ -66,11 +66,9 @@ def validate_base64_image(base64_data):
 
 # Line送信
 def send_message(message_text, image):
-    print('テスト')
     LineApiKey = os.getenv('line_key')
     if LineApiKey==None:
         LineApiKey = os.environ['LINE_NOTIFY_API_TOKEN']
-    print(LineApiKey)
     headers = {'Authorization': 'Bearer ' + LineApiKey}
     data = {'message': f'{message_text}'}
     buf = io.BytesIO()

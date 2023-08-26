@@ -1,14 +1,11 @@
-
 # pytorch系のimport
-import torch                                #
-import torch.nn as nn                       #
-from torchvision import transforms          #
-from torchvision.models import resnet18     #学習時に使ったのと同じ学習済みモデルをインポート
-#import pytorch_lightning as pl              #
+import torch
+import torch.nn as nn
+from torchvision import transforms
+from torchvision.models import resnet18
 
+# 共通モジュールのimport
 from process_common import resize_image, validate_base64_image
-
-
 
 # 学習済みモデルに合わせた前処理を追加
 transform = transforms.Compose([
@@ -18,7 +15,7 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
     
-# PytorchLightningを使わないバージョン
+# ネットワークの定義
 class Net(nn.Module):
 
     def __init__(self):
@@ -34,7 +31,6 @@ class Net(nn.Module):
         h = self.fc(h)
         return h
     
-
 # 推論したラベルから犬か猫かを返す関数
 def getName(label):
     if label==0:
@@ -58,19 +54,16 @@ def predict(img):
     # ネットワークの準備
     net = Net().cpu().eval()
 
-    # 学習済みモデルの重み（dog_cat.pt）を読み込み
+    # 学習済みモデルの重みを読み込み
     net.load_state_dict(torch.load('./static/models/dog_cat.pt', map_location=torch.device('cpu')))
-    # net.load_state_dict(torch.load('./src/dog_cat.pt', map_location=torch.device('cpu')))
 
     # データの前処理
     img = transform(img)
-    print(img.shape)
     img = img.unsqueeze(0) # 1次元増やす
 
     # 推論
     pred = torch.argmax(net(img), dim=1).cpu().detach().numpy()
     NameProba_ = round((max(torch.softmax(net(img), dim=1)[0]) * 100).item(),2)
-    print(f'pred:{type(pred)}')
 
     Name_ = getName(pred)
     return Name_, NameProba_

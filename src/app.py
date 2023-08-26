@@ -28,7 +28,6 @@ def request_route():
         img_base64_original = data['image']
         model_index = data['model_index']
 
-        print(model_index)
         try:Name_, NameProba_, base64_data, image_data = PPL[model_index](img_base64_original)
         except:return
         try:
