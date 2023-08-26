@@ -83,7 +83,7 @@ def predict(img):
 
     # 学習済みモデルの重み（dog_cat.pt）を読み込み
     
-    net.load_state_dict(torch.load('./meat5_classification.pt', map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load('./static/models/meat5_classification.pt', map_location=torch.device('cpu')))
     # net.load_state_dict(torch.load('./src/dog_cat.pt', map_location=torch.device('cpu')))
     
     # データの前処理
