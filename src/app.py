@@ -1,9 +1,14 @@
+with open('.version', 'r') as file:
+    version = file.read().strip()
+
+print("Version:", version)
+
+
 # 必要なモジュールのインポート
 from process_common import send_message, ResultPost2Spreadsheet
 from process4dogcat import dogcat_process
-# from process4meatornot import meatornot_process # animal.py から前処理とネットワークの定義を読み込み
 from process4meat5 import meat5_process 
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template
 
 
 # PredictProcessList
@@ -11,14 +16,6 @@ PPL = [meat5_process, dogcat_process]
 
 # Flask のインスタンスを作成
 app = Flask(__name__)
-
-# アップロードされる拡張子の制限
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'gif', 'jpeg'])
-
-# 拡張子が適切かどうかをチェック
-def allwed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 
 # URL にアクセスがあった場合の挙動の設定
@@ -45,7 +42,7 @@ def request_route():
     elif request.method == 'GET':    
         with open('helpdoc.txt', 'r', encoding='utf-8') as file:
             helpdoc = file.read()
-        return render_template('index.html', helpdoc = helpdoc)
+        return render_template('index.html', helpdoc = helpdoc, version=version)
 
 
 # アプリケーションの実行の定義
