@@ -1,5 +1,5 @@
 # 必要なモジュールのインポート
-from process_common import send_message, ResultPost2Spreadsheet # animal.py から前処理とネットワークの定義を読み込み
+from process_common import send_message, ResultPost2Spreadsheet
 from process4dogcat import dogcat_process
 # from process4meatornot import meatornot_process # animal.py から前処理とネットワークの定義を読み込み
 from process4meat5 import meat5_process 
