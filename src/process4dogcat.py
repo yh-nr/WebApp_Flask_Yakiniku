@@ -70,6 +70,7 @@ def predict(img):
     # 推論
     pred = torch.argmax(net(img), dim=1).cpu().detach().numpy()
     NameProba_ = round((max(torch.softmax(net(img), dim=1)[0]) * 100).item(),2)
+    print(f'pred:{type(pred)}')
 
     Name_ = getName(pred)
     return Name_, NameProba_
